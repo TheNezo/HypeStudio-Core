@@ -1,4 +1,476 @@
-panel admin
-sistema login
-pagina de plugins completa
-diseño mas profesional tipo marketplace
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HypeStudio | Omni-Portal Elite v9.0</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Inter:wght@300;400;600;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+
+  <style>
+    /* HYPESTUDIO OMNI-FRAMEWORK v9.0
+       CORE ARCHITECTURE BY GEMINI
+    */
+    :root {
+      --primary: #38bdf8;
+      --primary-rgb: 56, 189, 248;
+      --secondary: #818cf8;
+      --bg: #020617;
+      --bg-alt: #0b1120;
+      --card: rgba(15, 23, 42, 0.6);
+      --text: #f1f5f9;
+      --text-dim: #94a3b8;
+      --border: rgba(255, 255, 255, 0.08);
+      --glass: blur(20px) saturate(180%);
+      --font-title: 'Montserrat', sans-serif;
+      --font-main: 'Inter', sans-serif;
+      --font-code: 'Fira Code', monospace;
+      --grad: linear-gradient(135deg, var(--primary), var(--secondary));
+    }
+
+    /* --- MOTOR DE COLOR DINÁMICO --- */
+    [data-color="cyan"] { --primary: #00d4ff; --primary-rgb: 0, 212, 255; --secondary: #0062ff; }
+    [data-color="purple"] { --primary: #a855f7; --primary-rgb: 168, 85, 247; --secondary: #6366f1; }
+    [data-color="emerald"] { --primary: #10b981; --primary-rgb: 16, 185, 129; --secondary: #3b82f6; }
+    [data-color="rose"] { --primary: #f43f5e; --primary-rgb: 244, 63, 94; --secondary: #fb923c; }
+    [data-color="amber"] { --primary: #f59e0b; --primary-rgb: 245, 158, 11; --secondary: #d946ef; }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; cursor: none !important; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-main);
+      overflow-x: hidden;
+      transition: all 0.5s ease;
+    }
+
+    /* --- SCROLLBAR --- */
+    ::-webkit-scrollbar { width: 10px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; border: 3px solid var(--bg); }
+
+    /* --- CUSTOM CURSOR --- */
+    #cursor-dot { position: fixed; width: 8px; height: 8px; background: var(--primary); border-radius: 50%; pointer-events: none; z-index: 1000001; transform: translate(-50%, -50%); transition: transform 0.1s; box-shadow: 0 0 15px var(--primary); }
+    #cursor-outline { position: fixed; width: 40px; height: 40px; border: 2px solid var(--primary); border-radius: 50%; pointer-events: none; z-index: 1000000; transform: translate(-50%, -50%); transition: all 0.15s ease-out; }
+
+    /* --- LAYOUT COMPONENTS --- */
+    .container { max-width: 1400px; margin: 0 auto; padding: 0 5%; }
+    .section { padding: 120px 0; }
+
+    /* --- NAVBAR --- */
+    nav {
+      position: fixed; width: 100%; top: 0; z-index: 10000; padding: 30px 8%;
+      display: flex; justify-content: space-between; align-items: center;
+      transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    nav.scrolled {
+      padding: 15px 8%;
+      background: rgba(2, 6, 23, 0.8);
+      backdrop-filter: var(--glass);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-brand { display: flex; align-items: center; gap: 15px; text-decoration: none; }
+    .nav-logo { height: 45px; filter: drop-shadow(0 0 8px var(--primary)); }
+    .nav-title { font-family: var(--font-title); font-weight: 900; color: #fff; font-size: 1.5rem; letter-spacing: -1px; }
+    .nav-title span { color: var(--primary); }
+
+    .nav-links { display: flex; gap: 40px; align-items: center; }
+    .nav-link {
+      color: var(--text-dim); text-decoration: none; font-weight: 700; font-size: 0.75rem;
+      text-transform: uppercase; letter-spacing: 1.5px; transition: 0.3s;
+    }
+    .nav-link:hover { color: var(--primary); }
+
+    /* --- HERO --- */
+    .hero { min-height: 100vh; display: flex; align-items: center; position: relative; overflow: hidden; }
+    .hero-content { position: relative; z-index: 2; width: 60%; }
+    .hero-h1 { font-family: var(--font-title); font-size: 5.5rem; line-height: 0.9; margin-bottom: 30px; font-weight: 900; }
+    .hero-h1 span { color: var(--primary); background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+    .btn {
+      display: inline-flex; align-items: center; gap: 12px;
+      padding: 20px 40px; border-radius: 15px; font-weight: 800;
+      text-transform: uppercase; text-decoration: none; transition: 0.4s;
+      border: none; cursor: pointer; font-size: 0.85rem;
+    }
+    .btn-primary { background: var(--grad); color: #000; box-shadow: 0 10px 30px rgba(var(--primary-rgb), 0.3); }
+    .btn-primary:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(var(--primary-rgb), 0.5); filter: brightness(1.1); }
+
+    /* --- STORE --- */
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; }
+    .card {
+      background: var(--card); border: 1px solid var(--border); border-radius: 35px;
+      padding: 45px; transition: 0.4s; position: relative; overflow: hidden;
+      backdrop-filter: var(--glass);
+    }
+    .card:hover { transform: translateY(-15px); border-color: var(--primary); box-shadow: 0 30px 60px rgba(0,0,0,0.4); }
+    .card-tag { position: absolute; top: 30px; right: 30px; font-size: 0.6rem; font-weight: 900; color: var(--primary); letter-spacing: 2px; }
+    .card-icon { width: 60px; height: 60px; background: rgba(var(--primary-rgb), 0.1); border-radius: 18px; display: flex; justify-content: center; align-items: center; color: var(--primary); margin-bottom: 30px; }
+
+    /* --- FAQ / FORO SYSTEM --- */
+    .faq-wrapper { max-width: 900px; margin: 0 auto; }
+    .faq-item {
+      background: var(--bg-alt); border: 1px solid var(--border);
+      border-radius: 20px; margin-bottom: 15px; overflow: hidden; transition: 0.3s;
+    }
+    .faq-header {
+      padding: 25px 35px; display: flex; justify-content: space-between;
+      align-items: center; cursor: pointer; font-weight: 700;
+    }
+    .faq-header:hover { background: rgba(255,255,255,0.03); }
+    .faq-header i { transition: 0.3s; color: var(--primary); }
+    .faq-content {
+      padding: 0 35px; max-height: 0; overflow: hidden;
+      transition: all 0.4s cubic-bezier(0,1,0,1); color: var(--text-dim);
+      line-height: 1.8; font-size: 0.95rem;
+    }
+    .faq-item.active { border-color: var(--primary); }
+    .faq-item.active .faq-content { max-height: 500px; padding-bottom: 30px; }
+    .faq-item.active .faq-header i { transform: rotate(180deg); }
+
+    /* --- WEBHOOK FORM --- */
+    .form-container {
+      background: linear-gradient(145deg, #0f172a, #020617);
+      border: 1px solid var(--border); border-radius: 50px; padding: 80px;
+      text-align: center; position: relative;
+    }
+    .hype-input {
+      width: 100%; background: #000; border: 1px solid var(--border);
+      padding: 20px 25px; border-radius: 18px; color: #fff; font-family: inherit;
+      margin-bottom: 20px; transition: 0.3s; outline: none;
+    }
+    .hype-input:focus { border-color: var(--primary); box-shadow: 0 0 20px rgba(var(--primary-rgb), 0.2); }
+
+    /* --- TOASTS --- */
+    #toast-container { position: fixed; bottom: 30px; right: 30px; z-index: 999999; }
+    .toast {
+      background: #0f172a; border-left: 4px solid var(--primary); padding: 20px 30px;
+      border-radius: 15px; color: #fff; margin-top: 15px; box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+      display: flex; align-items: center; gap: 15px; animation: slideIn 0.4s ease-out;
+    }
+    @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+    /* --- CONTROLS --- */
+    .side-controls { position: fixed; left: 30px; bottom: 30px; z-index: 10000; display: flex; flex-direction: column; gap: 10px; }
+    .control-btn { width: 50px; height: 50px; background: var(--card); border: 1px solid var(--border); border-radius: 12px; display: flex; justify-content: center; align-items: center; color: #fff; cursor: pointer; transition: 0.3s; backdrop-filter: var(--glass); }
+    .control-btn:hover { border-color: var(--primary); transform: scale(1.1); color: var(--primary); }
+
+    /* --- FOOTER --- */
+    footer { padding: 100px 8% 50px; background: #010409; border-top: 1px solid var(--border); }
+    .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 80px; }
+    .footer-col h4 { color: var(--primary); margin-bottom: 30px; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 3px; }
+    .footer-link { display: block; color: var(--text-dim); text-decoration: none; margin-bottom: 15px; transition: 0.3s; }
+    .footer-link:hover { color: #fff; transform: translateX(5px); }
+
+    @media (max-width: 1024px) {
+      .hero-content { width: 100%; text-align: center; }
+      .hero-h1 { font-size: 3.5rem; }
+      .footer-grid { grid-template-columns: 1fr; gap: 40px; }
+    }
+  </style>
+</head>
+<body data-color="cyan">
+
+<div id="cursor-dot"></div>
+<div id="cursor-outline"></div>
+
+<div class="side-controls">
+  <div class="control-btn" onclick="Engine.nextTheme()"><i data-lucide="palette"></i></div>
+  <div class="control-btn" onclick="Engine.toggleLang()"><i data-lucide="languages"></i></div>
+  <div class="control-btn" onclick="window.scrollTo({top:0, behavior:'smooth'})"><i data-lucide="arrow-up"></i></div>
+</div>
+
+<nav id="navbar">
+  <a href="#" class="nav-brand">
+    <img src="HYPESTUDIO.png" alt="Hype" class="nav-logo">
+    <div class="nav-title">HYPE<span>STUDIO</span></div>
+  </a>
+  <div class="nav-links">
+    <a href="#store" class="nav-link" data-t="nav_store">Tienda</a>
+    <a href="#foro" class="nav-link" data-t="nav_foro">Foro/FAQ</a>
+    <a href="#contacto" class="nav-link" data-t="nav_contact">Contacto</a>
+    <a href="https://discord.gg/bt4hrwXmQp" class="btn btn-primary" style="padding: 10px 25px; font-size: 0.7rem;">DISCORD</a>
+  </div>
+</nav>
+
+<section class="hero container">
+  <div class="hero-content" data-aos="fade-right">
+    <h1 class="hero-h1" data-t="hero_title">Desarrollo de <span>Élite</span> para Minecraft.</h1>
+    <p style="color: var(--text-dim); font-size: 1.25rem; line-height: 1.8; margin-bottom: 40px; max-width: 600px;" data-t="hero_desc">
+      Creamos infraestructura robusta, plugins optimizados y soluciones web de alto rendimiento para los servidores más exigentes de la comunidad.
+    </p>
+    <div style="display: flex; gap: 20px;">
+      <a href="#store" class="btn btn-primary" data-t="btn_explore">Explorar Catálogo <i data-lucide="shopping-cart"></i></a>
+      <a href="#foro" class="btn" style="border: 1px solid var(--border); color: #fff;" data-t="btn_help">Centro de Ayuda</a>
+    </div>
+  </div>
+</section>
+
+<section class="section container" id="store">
+  <div style="text-align: center; margin-bottom: 80px;" data-aos="fade-up">
+    <p style="color: var(--primary); font-weight: 800; letter-spacing: 4px; font-size: 0.75rem;" data-t="store_tag">PREMIUM ASSETS</p>
+    <h2 style="font-family: var(--font-title); font-size: 3.5rem;" data-t="store_title">PLUGINS <span>DESTACADOS</span></h2>
+  </div>
+  <div class="grid" id="product-list">
+  </div>
+</section>
+
+<section class="section container" id="foro">
+  <div style="text-align: center; margin-bottom: 60px;" data-aos="fade-up">
+    <p style="color: var(--primary); font-weight: 800; letter-spacing: 4px; font-size: 0.75rem;" data-t="faq_tag">KNOWLEDGE BASE</p>
+    <h2 style="font-family: var(--font-title); font-size: 3.5rem;" data-t="faq_title">PREGUNTAS <span>FRECUENTES</span></h2>
+  </div>
+
+  <div class="faq-wrapper" id="faq-list">
+  </div>
+</section>
+
+<section class="section container" id="contacto">
+  <div class="form-container" data-aos="zoom-in">
+    <h2 style="font-family: var(--font-title); font-size: 3rem; margin-bottom: 20px;" data-t="form_title">¿TIENES UN <span>PROYECTO?</span></h2>
+    <p style="color: var(--text-dim); margin-bottom: 50px;" data-t="form_desc">Envía tu propuesta técnica. Recibirás respuesta inmediata en nuestro Discord.</p>
+
+    <form id="hype-webhook" style="max-width: 700px; margin: 0 auto; text-align: left;">
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+        <div>
+          <label style="font-size: 0.7rem; font-weight: 800; color: var(--primary); text-transform: uppercase;">Discord User</label>
+          <input type="text" id="w-name" class="hype-input" placeholder="Milo#0001" required>
+        </div>
+        <div>
+          <label style="font-size: 0.7rem; font-weight: 800; color: var(--primary); text-transform: uppercase;">Servicio</label>
+          <input type="text" id="w-service" class="hype-input" placeholder="Ej: Setup BoxPvP" required>
+        </div>
+      </div>
+      <label style="font-size: 0.7rem; font-weight: 800; color: var(--primary); text-transform: uppercase;">Detalles del Requerimiento</label>
+      <textarea id="w-msg" class="hype-input" rows="5" placeholder="Explica tu idea detalladamente..." required></textarea>
+      <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;" data-t="btn_send">ENVIAR TRANSMISIÓN <i data-lucide="zap"></i></button>
+    </form>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-grid container">
+    <div class="footer-col">
+      <div class="nav-title" style="font-size: 2rem; margin-bottom: 20px;">HYPE<span>STUDIO</span></div>
+      <p style="color: var(--text-dim); line-height: 1.8;" data-t="footer_text">
+        La central de desarrollo definitivo para servidores de Minecraft de alto nivel. Calidad, rendimiento y soporte 24/7.
+      </p>
+    </div>
+    <div class="footer-col">
+      <h4 data-t="f_links">Navegación</h4>
+      <a href="#store" class="footer-link">Tienda</a>
+      <a href="#foro" class="footer-link">Preguntas Frecuentes</a>
+      <a href="https://discord.gg/bt4hrwXmQp" class="footer-link">Soporte Discord</a>
+    </div>
+    <div class="footer-col">
+      <h4 data-t="f_legal">Información</h4>
+      <a href="#foro" class="footer-link">Política de Reembolsos</a>
+      <a href="#foro" class="footer-link">Métodos de Pago</a>
+      <a href="#" class="footer-link">Términos de Uso</a>
+    </div>
+  </div>
+  <div style="text-align: center; margin-top: 80px; padding-top: 40px; border-top: 1px solid var(--border); color: var(--text-dim); font-size: 0.8rem;">
+    © 2026 HypeStudio. Desarrollado con tecnología **HypeCore**.
+  </div>
+</footer>
+
+<div id="toast-container"></div>
+
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+  /**
+   * HYPESTUDIO ENGINE v9.0
+   * Pro-Grade JavaScript Logic
+   */
+
+  const DATA = {
+    products: [
+      { name: "HypeRewards", price: 0, tag: "NUEVO", icon: "gift", desc: "Recompensas diarias con animaciones épicas." },
+      { name: "HypeRelic", price: 0, tag: "ACTUALIZADO", icon: "gem", desc: "Mochilas para los usuarios o SurvivalCustom." },
+      { name: "CONFIGURANDO", price: 0, tag: "ELITE", icon: "shield-check", desc: "-------." },
+      { name: "CONFIGURANDO", price: 0, icon: "shopping-bag", tag: "PRO", desc: "-------." }
+    ],
+    faq: [
+      {
+        q: "¿Cómo puedo comprar los plugins?",
+        a: "Puedes adquirir nuestros productos directamente a través de nuestro Discord oficial. Aceptamos **PayPal, Binance Pay y Tarjetas de Crédito**. Una vez realizado el pago, el bot de HypeStudio te entregará el acceso al archivo y tu licencia única."
+      },
+      {
+        q: "¿Se pueden realizar reembolsos?",
+        a: "Debido a la naturaleza digital de nuestros productos (software), **no realizamos reembolsos** una vez que el archivo ha sido descargado. Sin embargo, ofrecemos soporte técnico ilimitado para asegurar que el plugin funcione correctamente en tu servidor."
+      },
+      {
+        q: "¿Ofrecen setups personalizados?",
+        a: "¡Sí! Realizamos setups completos de BoxPvP, Survival y Practice. Puedes solicitar una cotización en la sección de contacto o abriendo un ticket de 'Servicios' en nuestro Discord."
+      },
+      {
+        q: "¿Cómo recibo las actualizaciones?",
+        a: "Todos los clientes tienen acceso a un canal privado de actualizaciones en Discord. Cada vez que lanzamos una nueva versión, recibirás una notificación y el link de descarga actualizado."
+      }
+    ],
+    lang: {
+      es: {
+        nav_store: "Tienda", nav_foro: "Foro/FAQ", nav_contact: "Contacto",
+        hero_title: "Desarrollo de <span>Élite</span> para Minecraft.",
+        hero_desc: "Infrastructure robusta, plugins optimizados y soluciones web de alto rendimiento.",
+        btn_explore: "Explorar Catálogo", btn_help: "Centro de Ayuda",
+        store_tag: "PREMIUM ASSETS", store_title: "PLUGINS <span>DESTACADOS</span>",
+        faq_tag: "KNOWLEDGE BASE", faq_title: "PREGUNTAS <span>FRECUENTES</span>",
+        form_title: "¿TIENES UN <span>PROYECTO?</span>", form_desc: "Envía tu propuesta técnica e inmediata en Discord.",
+        btn_send: "ENVIAR TRANSMISIÓN", f_links: "Navegación", f_legal: "Información"
+      },
+      en: {
+        nav_store: "Store", nav_foro: "Foro/FAQ", nav_contact: "Contact",
+        hero_title: "Elite <span>Development</span> for Minecraft.",
+        hero_desc: "Robust infrastructure, optimized plugins, and high-performance web solutions.",
+        btn_explore: "Browse Catalog", btn_help: "Help Center",
+        store_tag: "PREMIUM ASSETS", store_title: "FEATURED <span>PLUGINS</span>",
+        faq_tag: "KNOWLEDGE BASE", faq_title: "FREQUENT <span>QUESTIONS</span>",
+        form_title: "GOT A <span>PROJECT?</span>", form_desc: "Send your technical proposal for instant Discord reply.",
+        btn_send: "SEND TRANSMISSION", f_links: "Navigation", f_legal: "Information"
+      }
+    }
+  };
+
+  const Engine = {
+    currentLang: 'es',
+    themes: ['cyan', 'purple', 'emerald', 'rose', 'amber'],
+    themeIdx: 0,
+
+    init() {
+      this.renderProducts();
+      this.renderFAQ();
+      this.bindEvents();
+      AOS.init({ duration: 1000, once: true });
+      lucide.createIcons();
+      this.toast("HypeStudio Portal v9.0 Online");
+    },
+
+    bindEvents() {
+      // Cursor
+      const dot = document.getElementById('cursor-dot');
+      const out = document.getElementById('cursor-outline');
+      window.onmousemove = (e) => {
+        dot.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+        out.style.left = e.clientX + 'px';
+        out.style.top = e.clientY + 'px';
+      };
+
+      // Nav Scroll
+      window.onscroll = () => {
+        const n = document.getElementById('navbar');
+        if(window.scrollY > 50) n.classList.add('scrolled');
+        else n.classList.remove('scrolled');
+      };
+
+      // Webhook
+      document.getElementById('hype-webhook').onsubmit = (e) => this.handleForm(e);
+    },
+
+    renderProducts() {
+      const list = document.getElementById('product-list');
+      list.innerHTML = DATA.products.map(p => `
+                    <div class="card" data-aos="fade-up">
+                        <div class="card-tag">${p.tag || ''}</div>
+                        <div class="card-icon"><i data-lucide="${p.icon}"></i></div>
+                        <h3 style="font-family: var(--font-title); font-size: 1.8rem; margin-bottom: 15px;">${p.name}</h3>
+                        <p style="color: var(--text-dim); font-size: 0.9rem; min-height: 50px;">${p.desc}</p>
+                        <div style="font-size: 2.5rem; font-weight: 900; margin: 25px 0;">
+                            ${p.price === 0 ? 'GRATIS' : '$'+p.price}
+                        </div>
+                        <button class="btn btn-primary" style="width: 100%; border-radius: 12px;" onclick="Engine.buy('${p.name}')">OBTENER <i data-lucide="external-link"></i></button>
+                    </div>
+                `).join('');
+      lucide.createIcons();
+    },
+
+    renderFAQ() {
+      const list = document.getElementById('faq-list');
+      list.innerHTML = DATA.faq.map(f => `
+                    <div class="faq-item" onclick="this.classList.toggle('active')">
+                        <div class="faq-header">
+                            <span>${f.q}</span>
+                            <i data-lucide="chevron-down"></i>
+                        </div>
+                        <div class="faq-content">${f.a}</div>
+                    </div>
+                `).join('');
+      lucide.createIcons();
+    },
+
+    nextTheme() {
+      this.themeIdx = (this.themeIdx + 1) % this.themes.length;
+      const theme = this.themes[this.themeIdx];
+      document.body.setAttribute('data-color', theme);
+      this.toast(`Tema: ${theme.toUpperCase()}`);
+    },
+
+    toggleLang() {
+      this.currentLang = this.currentLang === 'es' ? 'en' : 'es';
+      document.querySelectorAll('[data-t]').forEach(el => {
+        const key = el.getAttribute('data-t');
+        el.innerHTML = DATA.lang[this.currentLang][key];
+      });
+      this.toast(`Language: ${this.currentLang.toUpperCase()}`);
+    },
+
+    toast(msg) {
+      const cont = document.getElementById('toast-container');
+      const t = document.createElement('div');
+      t.className = 'toast';
+      t.innerHTML = `<i data-lucide="info"></i> <span>${msg}</span>`;
+      cont.appendChild(t);
+      lucide.createIcons();
+      setTimeout(() => t.remove(), 4000);
+    },
+
+    buy(name) {
+      this.toast(`Abriendo checkout para ${name}...`);
+      setTimeout(() => window.open('https://discord.gg/bt4hrwXmQp'), 1000);
+    },
+
+    async handleForm(e) {
+      e.preventDefault();
+      const btn = e.target.querySelector('button');
+      btn.innerHTML = 'TRANSMITIENDO...';
+
+      const payload = {
+        embeds: [{
+          title: "🛰️ NUEVO TICKET DE PROYECTO",
+          color: 15418782,
+          fields: [
+            { name: "Usuario Discord", value: document.getElementById('w-name').value, inline: true },
+            { name: "Servicio", value: document.getElementById('w-service').value, inline: true },
+            { name: "Mensaje", value: document.getElementById('w-msg').value }
+          ],
+          footer: { text: "HypeStudio Intelligence Unit" },
+          timestamp: new Date()
+        }]
+      };
+
+      try {
+        await fetch("https://discord.com/api/webhooks/1494414663759429642/r7rRVgBuksNJ7mP_2XkX-CxVhOxlMl8XPv9G7UrFcOqpFukz3M2szlc16S8nwQT2yhy_", {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify(payload)
+        });
+        this.toast("✅ ¡Idea enviada! Revisa Discord.");
+        confetti({ particleCount: 200, spread: 80, origin: { y: 0.6 } });
+        e.target.reset();
+      } catch(err) {
+        this.toast("❌ Error en la conexión.");
+      } finally {
+        btn.innerHTML = 'ENVIAR TRANSMISIÓN <i data-lucide="zap"></i>';
+        lucide.createIcons();
+      }
+    }
+  };
+
+  window.onload = () => Engine.init();
+</script>
+</body>
+</html>

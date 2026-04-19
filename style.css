@@ -1,0 +1,51 @@
+:root {
+  --bg: #0f172a;
+  --card: #1e293b;
+  --text: #f8fafc;
+  --text-dim: #94a3b8;
+  --accent: #38bdf8;
+  --accent-glow: rgba(56, 189, 248, 0.3);
+  --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+[data-theme="light"] {
+  --bg: #f1f5f9;
+  --card: #ffffff;
+  --text: #0f172a;
+  --text-dim: #64748b;
+  --accent: #0284c7;
+  --accent-glow: rgba(2, 132, 199, 0.2);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
+
+body { background: var(--bg); color: var(--text); transition: background var(--transition), color var(--transition); }
+
+nav { display: flex; justify-content: space-between; align-items: center; padding: 1rem 10%; background: var(--card); position: sticky; top: 0; z-index: 100; border-bottom: 1px solid var(--accent-glow); }
+
+.logo { font-size: 1.5rem; font-weight: 800; color: var(--text); }
+.logo span { color: var(--accent); }
+
+.nav-links a { text-decoration: none; color: var(--text); margin-left: 20px; font-weight: 500; transition: color var(--transition); }
+.nav-links a:hover { color: var(--accent); }
+
+.controls { display: flex; gap: 10px; align-items: center; }
+#theme-toggle, #lang-select { background: var(--bg); border: 1px solid var(--accent); color: var(--text); padding: 5px 10px; border-radius: 5px; cursor: pointer; }
+
+#hero { text-align: center; padding: 80px 10%; background: linear-gradient(to bottom, var(--card), var(--bg)); }
+#hero h1 { font-size: 3.5rem; margin-bottom: 10px; }
+
+.section-container { padding: 40px 10%; }
+.section-container h2 { margin-bottom: 25px; border-left: 4px solid var(--accent); padding-left: 15px; }
+
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+
+.card { background: var(--card); padding: 25px; border-radius: 12px; border: 1px solid transparent; transition: all var(--transition); }
+.card:hover { transform: translateY(-5px); border-color: var(--accent); box-shadow: 0 10px 20px var(--accent-glow); }
+
+.badge { background: var(--accent); color: white; padding: 3px 10px; border-radius: 4px; font-size: 0.75rem; font-weight: bold; }
+
+footer { background: var(--card); padding: 40px 10%; text-align: center; margin-top: 50px; }
+.social-links { display: flex; justify-content: center; gap: 30px; margin-bottom: 20px; }
+.social-links a { color: var(--text); text-decoration: none; display: flex; align-items: center; gap: 8px; font-weight: 600; }
+.social-links a:hover { color: var(--accent); }
